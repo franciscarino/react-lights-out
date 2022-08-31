@@ -33,17 +33,36 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   function createBoard() {
     let initialBoard = [];
-    // TODO: create array-of-arrays of true/false values
+    // TODO create array-of-arrays of true/false values
+    for (let y = 0; y < nrows; y++) {
+      initialBoard.push(Array.from({ length: ncols }).map((c) => (c = false)));
+    }
+
     return initialBoard;
   }
 
-  function hasWon() {
-    // TODO: check the board in state to determine whether the player has won.
+  /**
+   * Returns a boolean
+   * True if all cells are true, False if any cells are false
+   */
+  function hasWon(gameBoard) {
+    // TODO check the board in state to determine whether the player has won.
+
+    // QUESTION: use filter?
+    for (let row of gameBoard) {
+      for (let cell of row) {
+        if (cell === false) return false;
+      }
+    }
+    return true;
   }
 
   function flipCellsAround(coord) {
-    setBoard(oldBoard => {
+    setBoard((oldBoard) => {
       const [y, x] = coord.split("-").map(Number);
+      // "1-1"
+      // ["1", "1"]
+      // [1,1]
 
       const flipCell = (y, x, boardCopy) => {
         // if this coord is actually on board, flip it
@@ -63,11 +82,11 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
 
   // if the game is won, just show a winning msg & render nothing else
 
-  // TODO
+  // TODO:
 
   // make table board
 
-  // TODO
+  // TODO:
 }
 
 export default Board;
