@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
 import "./Board.css";
+import {toggleSurrounding as flipCellsAroundMe} from "./helperFunctions";
 
 /** Game board of Lights out.
  *
@@ -35,7 +36,7 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     let initialBoard = [];
     // TODO create array-of-arrays of true/false values
     for (let y = 0; y < nrows; y++) {
-      initialBoard.push(Array.from({ length: ncols }).map((c) => (c = false)));
+      initialBoard.push(Array.from({ length: ncols }).map((c) => false));
     }
 
     return initialBoard;
@@ -57,6 +58,10 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     return true;
   }
 
+
+
+
+
   function flipCellsAround(coord) {
     setBoard((oldBoard) => {
       const [y, x] = coord.split("-").map(Number);
@@ -72,21 +77,36 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
         }
       };
 
-      // TODO: Make a (deep) copy of the oldBoard
+      const boardCopy = oldBoard.map(x => x);
 
-      // TODO: in the copy, flip this cell and the cells around it
 
-      // TODO: return the copy
+      function flipCellsAroundMe(x,y, boardPar){
+        flipCell(y, x, boardPar);
+        flipCell(y + 1, x, boardPar);
+        flipCell(y - 1, x, boardPar);
+        flipCell(y, x + 1, boardPar);
+        flipCell(y, x - 1, boardPar);
+      }
+
+      flipCellsAroundMe(x, y, boardCopy);
+
+      return boardCopy;
+
     });
   }
 
   // if the game is won, just show a winning msg & render nothing else
+  let won = hasWon();
 
-  // TODO:
 
-  // make table board
+  return(
+    <div>
+      <p>{won && 'You Won!'}</p>
+      <div>{board}</div>
+    </div>
 
-  // TODO:
+  )
 }
 
-export default Board;
+
+export default Board
